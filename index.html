@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>ANITRAX — Transferencias sin Límites</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<style>
+:root{--bg:#040810;--bg2:#070F1E;--bg3:#0A1628;--blue:#0A84FF;--cyan:#00D4FF;--green:#00D46A;--text:#FFFFFF;--muted:#8AA3C4;--dim:#3D5A80;--border:rgba(10,132,255,0.18)}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;overflow-x:hidden}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:18px 60px;display:flex;align-items:center;justify-content:space-between;backdrop-filter:blur(20px);background:rgba(4,8,16,.8);border-bottom:.5px solid var(--border)}
+.nav-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:22px;letter-spacing:.05em}
+.nav-logo span{color:var(--cyan)}
+.nav-links{display:flex;gap:28px;list-style:none}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:13px;font-weight:500;transition:color .2s}
+.nav-links a:hover{color:var(--text)}
+.nav-cta{background:var(--blue);color:#fff;padding:10px 24px;border-radius:99px;font-size:13px;font-weight:500;text-decoration:none;transition:opacity .2s}
+.nav-cta:hover{opacity:.85}
+@media(max-width:768px){.nav-links{display:none}.nav{padding:18px 24px}}
+
+/* HERO */
+#hero{height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 24px;position:relative;overflow:hidden}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(10,132,255,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(10,132,255,.06) 1px,transparent 1px);background-size:60px 60px;mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black,transparent)}
+.hero-glow{position:absolute;width:700px;height:700px;background:radial-gradient(circle,rgba(0,212,255,.07) 0%,transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(10,132,255,.12);border:1px solid rgba(10,132,255,.35);border-radius:99px;padding:8px 20px;font-size:12px;color:var(--cyan);letter-spacing:.05em;margin-bottom:28px}
+.badge-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:blink 2s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+.hero-title{font-family:'Syne',sans-serif;font-size:clamp(72px,13vw,140px);font-weight:800;letter-spacing:-.04em;line-height:.92;margin-bottom:10px}
+.hero-title .a{color:var(--cyan)}
+.hero-rule{width:120px;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);margin:0 auto 24px}
+.hero-sub{font-size:clamp(16px,2.5vw,22px);font-weight:300;color:var(--muted);max-width:620px;line-height:1.6;margin-bottom:10px}
+.hero-sub strong{color:var(--text);font-weight:500}
+.hero-desc{font-size:15px;color:var(--dim);max-width:540px;line-height:1.7;margin-bottom:36px}
+.hero-pills{display:flex;flex-wrap:wrap;gap:9px;justify-content:center;margin-bottom:36px}
+.pill{padding:6px 15px;border-radius:99px;font-size:12px;border:1px solid var(--border);color:var(--muted);background:rgba(10,20,40,.6)}
+.pill.b{border-color:rgba(0,212,255,.4);color:var(--cyan)}
+.pill.g{border-color:rgba(0,212,106,.4);color:var(--green)}
+.hero-btns{display:flex;gap:14px;flex-wrap:wrap;justify-content:center}
+.btn-primary{background:var(--blue);color:#fff;padding:14px 36px;border-radius:99px;font-size:15px;font-weight:500;border:none;cursor:pointer;text-decoration:none;transition:transform .2s,opacity .2s;display:inline-block}
+.btn-primary:hover{transform:translateY(-2px)}
+.btn-outline{background:transparent;color:var(--cyan);padding:14px 36px;border-radius:99px;font-size:15px;font-weight:500;border:1px solid rgba(0,212,255,.4);cursor:pointer;text-decoration:none;transition:background .2s;display:inline-block}
+.btn-outline:hover{background:rgba(0,212,255,.08)}
+
+/* SECCIONES */
+section{padding:120px 60px;max-width:1200px;margin:0 auto}
+.sec-label{font-size:11px;letter-spacing:.16em;color:var(--blue);font-weight:600;text-transform:uppercase;margin-bottom:14px}
+.sec-title{font-family:'Syne',sans-serif;font-size:clamp(30px,5vw,52px);font-weight:700;line-height:1.1;letter-spacing:-.02em;margin-bottom:16px}
+.sec-sub{font-size:16px;color:var(--muted);line-height:1.8;max-width:600px;margin-bottom:56px}
+
+/* CARDS */
+.cards-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px}
+.p-card{background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:36px 30px;position:relative;overflow:hidden;transition:border-color .3s}
+.p-card::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 0%,rgba(0,212,255,.05),transparent 70%);opacity:0;transition:opacity .3s}
+.p-card:hover{border-color:rgba(0,212,255,.4)}
+.p-card:hover::before{opacity:1}
+.p-card-ico{font-size:30px;margin-bottom:16px;display:block}
+.p-card-t{font-family:'Syne',sans-serif;font-size:17px;font-weight:700;color:var(--text);margin-bottom:10px}
+.p-card-d{font-size:14px;color:var(--muted);line-height:1.7}
+.p-tag{display:inline-block;margin-top:14px;font-size:11px;padding:4px 12px;border-radius:99px;background:rgba(0,212,255,.1);color:var(--cyan);border:1px solid rgba(0,212,255,.25);font-weight:600}
+.p-tag.g{background:rgba(0,212,106,.1);color:var(--green);border-color:rgba(0,212,106,.25)}
+.p-tag.y{background:rgba(255,180,0,.1);color:#FFB400;border-color:rgba(255,180,0,.25)}
+
+/* FULL WIDTH */
+.full-section{background:var(--bg2);padding:120px 0}
+.full-section .inner{max-width:1200px;margin:0 auto;padding:0 60px}
+
+/* MARQUEE */
+.marquee-wrap{overflow:hidden;border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:20px 0;background:var(--bg2)}
+.marquee-track{display:flex;gap:60px;width:max-content;animation:marquee 25s linear infinite}
+@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.marquee-item{font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:var(--dim);white-space:nowrap;display:flex;align-items:center;gap:20px}
+.marquee-item span{color:var(--cyan)}
+.marquee-dot{width:6px;height:6px;border-radius:50%;background:var(--blue);flex-shrink:0}
+
+/* STEPS */
+.flow-steps{display:flex;flex-direction:column;gap:2px;max-width:740px;margin-top:48px}
+.flow-step{display:flex;gap:24px;align-items:flex-start;padding:32px 0;border-bottom:1px solid var(--border)}
+.flow-step:last-child{border-bottom:none}
+.flow-num{width:48px;height:48px;border-radius:50%;background:rgba(0,212,255,.12);border:1px solid rgba(0,212,255,.35);color:var(--cyan);font-family:'Syne',sans-serif;font-size:18px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.flow-num.g{background:rgba(0,212,106,.12);border-color:rgba(0,212,106,.35);color:var(--green)}
+.flow-t{font-family:'Syne',sans-serif;font-size:20px;font-weight:700;color:var(--text);margin-bottom:6px}
+.flow-d{font-size:14px;color:var(--muted);line-height:1.7}
+.flow-tag{display:inline-block;margin-top:10px;font-size:11px;padding:3px 12px;border-radius:99px;background:rgba(10,132,255,.12);color:var(--blue);border:1px solid rgba(10,132,255,.25)}
+
+/* MODOS */
+.modes-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+@media(max-width:900px){.modes-grid{grid-template-columns:1fr}}
+.mode-card{background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:40px 32px;border-top:3px solid var(--blue)}
+.mode-card.m2{border-top-color:var(--cyan)}
+.mode-card.m3{border-top-color:var(--green)}
+.mode-ico{font-size:40px;margin-bottom:18px}
+.mode-n{font-family:'Syne',sans-serif;font-size:21px;font-weight:700;color:var(--text);margin-bottom:10px}
+.mode-d{font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:16px}
+.mode-features{list-style:none;display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
+.mode-features li{font-size:13px;color:var(--muted);display:flex;align-items:flex-start;gap:8px}
+.mode-features li::before{content:'→';color:var(--cyan);flex-shrink:0;font-weight:700}
+.mode-features li.g::before{color:var(--green)}
+.mode-tag{display:inline-block;font-size:11px;padding:4px 14px;border-radius:99px;background:rgba(10,132,255,.12);color:var(--blue);border:1px solid rgba(10,132,255,.25);font-weight:600}
+.mode-tag.c{background:rgba(0,212,255,.1);color:var(--cyan);border-color:rgba(0,212,255,.25)}
+.mode-tag.g{background:rgba(0,212,106,.1);color:var(--green);border-color:rgba(0,212,106,.25)}
+
+/* STATS */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+@media(max-width:768px){.stats-row{grid-template-columns:repeat(2,1fr)}}
+.stat{text-align:center;padding:48px 20px;background:var(--bg3);border:1px solid var(--border);border-radius:20px}
+.stat-n{font-family:'Syne',sans-serif;font-size:60px;font-weight:800;color:var(--cyan);line-height:1;letter-spacing:-.04em}
+.stat-l{font-size:13px;color:var(--dim);margin-top:10px;line-height:1.5}
+
+/* BLOCKCHAIN */
+.chain-flow{display:flex;flex-direction:column;gap:10px;max-width:700px}
+.chain-step{display:flex;align-items:center;gap:18px;background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:22px 26px}
+.chain-num{width:38px;height:38px;border-radius:50%;background:rgba(0,212,255,.12);color:var(--cyan);font-weight:700;font-size:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.chain-num.g{background:rgba(0,212,106,.12);color:var(--green)}
+.chain-t{font-size:15px;font-weight:500;color:var(--text);margin-bottom:3px}
+.chain-d{font-size:13px;color:var(--muted)}
+.chain-badge{margin-left:auto;font-size:11px;padding:4px 12px;border-radius:99px;background:rgba(0,212,106,.12);color:var(--green);border:1px solid rgba(0,212,106,.25);white-space:nowrap;flex-shrink:0;font-weight:600}
+.chain-arrow{text-align:left;padding-left:56px;color:var(--dim);font-size:18px}
+
+/* QUOTE */
+.quote-section{background:var(--bg2);padding:80px 60px;text-align:center}
+.quote-text{font-family:'Syne',sans-serif;font-size:clamp(28px,5vw,52px);font-weight:700;line-height:1.2;max-width:800px;margin:0 auto 20px;color:var(--text)}
+.quote-text .hi{color:var(--cyan)}
+.quote-sub{font-size:16px;color:var(--dim);max-width:520px;margin:0 auto}
+
+/* RENDIMIENTOS */
+.rw-tiers{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-bottom:40px}
+@media(max-width:900px){.rw-tiers{grid-template-columns:repeat(2,1fr)}}
+.rw-tier{background:var(--bg3);border:1px solid var(--border);border-radius:16px;padding:24px 16px;text-align:center;transition:border-color .3s}
+.rw-tier:hover{border-color:rgba(0,212,255,.4)}
+.rw-tier-ico{font-size:32px;margin-bottom:10px}
+.rw-tier-name{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:var(--text);margin-bottom:4px}
+.rw-tier-eth{font-size:12px;color:var(--dim);margin-bottom:10px}
+.rw-tier-rate{font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:var(--cyan)}
+.rw-tier-rate.g{color:var(--green)}
+.rw-tier-label{font-size:11px;color:var(--dim)}
+.rw-sim{background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:40px;max-width:720px}
+.rw-sim-title{font-family:'Syne',sans-serif;font-size:20px;font-weight:700;color:var(--text);margin-bottom:6px}
+.rw-sim-sub{font-size:14px;color:var(--muted);margin-bottom:24px}
+.rw-slider{width:100%;accent-color:var(--cyan);margin-bottom:12px;cursor:pointer}
+.rw-slider-labels{display:flex;justify-content:space-between;font-size:13px;color:var(--muted);margin-bottom:20px}
+.rw-slider-val{color:var(--cyan);font-weight:700}
+.rw-results{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}
+.rw-res{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:16px;text-align:center}
+.rw-res-label{font-size:11px;color:var(--muted);margin-bottom:4px}
+.rw-res-val{font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:var(--cyan)}
+.rw-res-val.g{color:var(--green)}
+.rw-res-unit{font-size:10px;color:var(--dim)}
+.rw-tier-badge{text-align:center;font-size:13px;color:var(--cyan);font-weight:600}
+
+/* VIDEOS */
+.videos-section{background:var(--bg2);padding:120px 60px}
+.videos-inner{max-width:1200px;margin:0 auto}
+.videos-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-top:48px}
+@media(max-width:768px){.videos-grid{grid-template-columns:1fr}}
+.video-card{background:var(--bg3);border:1px solid var(--border);border-radius:20px;overflow:hidden}
+.video-card-header{padding:24px 28px 16px}
+.video-card-label{font-size:11px;letter-spacing:.16em;color:var(--blue);font-weight:600;text-transform:uppercase;margin-bottom:8px}
+.video-card-title{font-family:'Syne',sans-serif;font-size:22px;font-weight:700;color:var(--text);margin-bottom:8px}
+.video-card-desc{font-size:14px;color:var(--muted);line-height:1.7}
+.video-embed{position:relative;width:100%;aspect-ratio:16/9;background:#000}
+.video-embed iframe{width:100%;height:100%;border:none}
+.video-placeholder{width:100%;aspect-ratio:16/9;background:var(--bg2);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;border-top:1px solid var(--border)}
+.video-placeholder-icon{width:64px;height:64px;border-radius:50%;background:var(--blue);display:flex;align-items:center;justify-content:center}
+.play-icon{width:0;height:0;border-top:12px solid transparent;border-bottom:12px solid transparent;border-left:22px solid white;margin-left:4px}
+.video-placeholder-text{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:var(--text)}
+.video-placeholder-sub{font-size:13px;color:var(--muted)}
+.video-yt-btn{display:inline-flex;align-items:center;gap:8px;margin:16px 28px 24px;padding:10px 20px;background:rgba(255,0,0,.15);border:1px solid rgba(255,0,0,.3);border-radius:99px;color:#FF4444;font-size:13px;font-weight:500;text-decoration:none;transition:background .2s}
+.video-yt-btn:hover{background:rgba(255,0,0,.25)}
+
+/* CTA */
+#cta{text-align:center;padding:160px 60px;position:relative;overflow:hidden}
+.cta-glow{position:absolute;width:800px;height:400px;background:radial-gradient(ellipse,rgba(10,132,255,.1) 0%,transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none}
+.cyan{color:var(--cyan)}
+
+/* FOOTER */
+footer{border-top:1px solid var(--border);padding:40px 60px;display:flex;align-items:center;justify-content:space-between;color:var(--dim);font-size:13px;flex-wrap:wrap;gap:16px}
+.footer-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:18px;color:var(--text)}
+.footer-logo span{color:var(--cyan)}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(40px)}
+@media(max-width:768px){section,#video-section,#cta,footer,.quote-section,.videos-section{padding-left:24px;padding-right:24px}}
+</style>
+</head>
+<body>
+
+<nav id="navbar">
+  <div class="nav-logo"><span>A</span>NITRAX</div>
+  <ul class="nav-links">
+    <li><a href="#que-es">Qué es</a></li>
+    <li><a href="#como">Cómo funciona</a></li>
+    <li><a href="#modos">Modos</a></li>
+    <li><a href="#rendimientos">Rendimientos</a></li>
+    <li><a href="#blockchain">Blockchain</a></li>
+    <li><a href="#videos">Videos</a></li>
+  </ul>
+  <a href="#videos" class="nav-cta">Ver demo →</a>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-badge"><span class="badge-dot"></span>Bluetooth · Blockchain Sepolia · IA · Hackathon 2026</div>
+  <h1 class="hero-title"><span class="a">A</span>NITRAX</h1>
+  <div class="hero-rule"></div>
+  <p class="hero-sub"><strong>El dinero viaja donde tú vayas,</strong><br>sin internet, sin barreras, sin límites.</p>
+  <p class="hero-desc">La primera app de transferencias que combina Bluetooth, blockchain Ethereum y control total por voz con IA — diseñada para incluir a todos, sin excepción.</p>
+  <div class="hero-pills">
+    <span class="pill b">📡 Sin internet</span>
+    <span class="pill b">⛓ Blockchain Sepolia</span>
+    <span class="pill b">🎙 Control por voz IA</span>
+    <span class="pill g">♿ 3 modos accesibles</span>
+    <span class="pill g">🔒 Biometría + voz</span>
+    <span class="pill">📈 Rendimientos DeFi</span>
+    <span class="pill">🌐 6 redes blockchain</span>
+    <span class="pill">🧾 Comprobante bancario</span>
+  </div>
+  <div class="hero-btns">
+    <a href="#videos" class="btn-primary">▶ Ver demo</a>
+    <a href="#que-es" class="btn-outline">Descubrir ANITRAX</a>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <div class="marquee-item"><span>Sin internet</span><div class="marquee-dot"></div></div>
+    <div class="marquee-item"><span>Blockchain Sepolia</span><div class="marquee-dot"></div></div>
+    <div class="marquee-item"><span>Control por voz</span><div class="marquee-dot"></div></div>
+    <div class="marquee-item"><span>0 comisiones</span><div class="marquee-dot"></div></div>
+    <div class="marquee-item"><span>Biometría</span><div class="marquee-dot"></div></div>
+    <div class="marquee-item"><span>Inclusión total</span><div class="marquee-dot"></div></div>
+    <div class="marquee-item"><span>Rendimientos DeFi</span><div class="marquee-dot"></div></div>
+    <div class="marquee-item"><span>Sin internet</span><div class="marquee-dot"></div></div>
+    <div class="marquee-item"><span>Blockchain Sepolia</span><div class="marquee-dot"></div></div>
+    <div class="marquee-item"><span>Control por voz</span><div class="marquee-dot"></div></div>
+    <div class="marquee-item"><span>0 comisiones</span><div class="marquee-dot"></div></div>
+    <div class="marquee-item"><span>Biometría</span><div class="marquee-dot"></div></div>
+    <div class="marquee-item"><span>Inclusión total</span><div class="marquee-dot"></div></div>
+    <div class="marquee-item"><span>Rendimientos DeFi</span><div class="marquee-dot"></div></div>
+  </div>
+</div>
+
+<!-- QUÉ ES -->
+<section id="que-es">
+  <p class="sec-label reveal">El problema resuelto</p>
+  <h2 class="sec-title reveal">Una app que elimina<br>todas las barreras.</h2>
+  <p class="sec-sub reveal">ANITRAX nació para romper la exclusión financiera. Sin señal, sin banco, sin comisiones, sin barreras de idioma ni accesibilidad.</p>
+  <div class="cards-grid">
+    <div class="p-card">
+      <span class="p-card-ico">📡</span>
+      <div class="p-card-t">Bluetooth directo</div>
+      <div class="p-card-d">Transfiere de celular a celular en segundos, sin WiFi. Funciona en zonas rurales, hospitales, eventos — donde no hay señal.</div>
+      <span class="p-tag">0 comisiones · Sin intermediarios</span>
+    </div>
+    <div class="p-card">
+      <span class="p-card-ico">⛓️</span>
+      <div class="p-card-t">Blockchain Sepolia</div>
+      <div class="p-card-d">Cada transferencia queda registrada permanentemente en Ethereum Sepolia. Inmutable, transparente y verificable en Etherscan.</div>
+      <span class="p-tag">Contrato 0x29f4e6…771F</span>
+    </div>
+    <div class="p-card">
+      <span class="p-card-ico">🤖</span>
+      <div class="p-card-t">Inteligencia Artificial</div>
+      <div class="p-card-d">IA Gemini entiende tu voz, confirma montos en ETH y guía cada paso. Di lo que quieres hacer — la IA lo ejecuta.</div>
+      <span class="p-tag">Gemini AI · Control por voz</span>
+    </div>
+    <div class="p-card">
+      <span class="p-card-ico">🧾</span>
+      <div class="p-card-t">Comprobante bancario</div>
+      <div class="p-card-d">Genera comprobante PNG/PDF profesional al instante con wallets, hash de transacción, fecha y monto.</div>
+      <span class="p-tag">PNG · PDF · Compartir</span>
+    </div>
+    <div class="p-card">
+      <span class="p-card-ico">🔐</span>
+      <div class="p-card-t">Biometría + voz</div>
+      <div class="p-card-d">Huella digital con BiometricPrompt + firma de voz única. Di "ANITRAX ábrete" y la app se abre desde pantalla bloqueada.</div>
+      <span class="p-tag">Biometría nativa · Sin contraseña</span>
+    </div>
+    <div class="p-card">
+      <span class="p-card-ico">🌐</span>
+      <div class="p-card-t">6 redes blockchain</div>
+      <div class="p-card-d">Sepolia, Arbitrum, Scroll, Base, Polygon y Mainnet. Cambia de red con un tap. Los RPCs y Chain IDs se actualizan solos.</div>
+      <span class="p-tag g">Multi-red · Listo para escalar</span>
+    </div>
+  </div>
+</section>
+
+<!-- QUOTE 1 -->
+<div class="quote-section">
+  <p class="quote-text reveal">"El dinero no debería necesitar<br><span class="hi">internet para moverse."</span></p>
+  <p class="quote-sub reveal">ANITRAX es la primera app que transfiere valor entre celulares usando solo Bluetooth — y lo registra para siempre en blockchain.</p>
+</div>
+
+<!-- CÓMO FUNCIONA -->
+<section id="como">
+  <p class="sec-label reveal">Flujo completo</p>
+  <h2 class="sec-title reveal">3 pasos.<br>Así de simple.</h2>
+  <p class="sec-sub reveal">El proceso completo de transferencia ANITRAX en menos de 30 segundos.</p>
+  <div class="flow-steps">
+    <div class="flow-step reveal">
+      <div class="flow-num">1</div>
+      <div>
+        <div class="flow-t">Selecciona o activa por voz</div>
+        <div class="flow-d">Modo estándar: elige el contacto. Modo sinestético: di "ANITRAX ábrete" y la IA toma el control completo.</div>
+        <span class="flow-tag">Gemini AI · BiometricPrompt</span>
+      </div>
+    </div>
+    <div class="flow-step reveal">
+      <div class="flow-num">2</div>
+      <div>
+        <div class="flow-t">Conecta por Bluetooth</div>
+        <div class="flow-d">Acerca los celulares. ANITRAX los detecta via Bluetooth RFCOMM. Sin WiFi, sin datos, sin internet.</div>
+        <span class="flow-tag">Bluetooth RFCOMM · 0 comisiones</span>
+      </div>
+    </div>
+    <div class="flow-step reveal">
+      <div class="flow-num">3</div>
+      <div>
+        <div class="flow-t">La IA confirma el monto</div>
+        <div class="flow-d">El asistente repite destinatario y monto en ETH. Confirma tocando o diciendo "sí".</div>
+        <span class="flow-tag">Confirmación inteligente</span>
+      </div>
+    </div>
+    <div class="flow-step reveal">
+      <div class="flow-num g">✓</div>
+      <div>
+        <div class="flow-t">Bluetooth + Blockchain + Comprobante</div>
+        <div class="flow-d">ANITRAX ejecuta todo: Bluetooth, Sepolia, comprobante PNG/PDF y notificación push a ambos celulares.</div>
+        <span class="flow-tag">Sepolia · PNG · PDF · Push</span>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ZK LAYER -->
+<section id="zk">
+  <p class="sec-label reveal">Privacidad avanzada</p>
+  <h2 class="sec-title reveal">
+    Zero-Knowledge no es una función.<br>Es el núcleo del sistema.
+  </h2>
+  <p class="sec-sub reveal">
+    ANITRAX integra pruebas criptográficas de conocimiento cero para validar identidad, fondos y acciones sin revelar datos sensibles en ningún punto del sistema.
+  </p>
+
+  <div class="cards-grid">
+
+    <div class="p-card">
+      <span class="p-card-ico">🔐</span>
+      <div class="p-card-t">Identidad privada</div>
+      <div class="p-card-d">
+        El usuario demuestra que es válido sin revelar identidad, credenciales o datos biométricos.
+      </div>
+      <span class="p-tag">ZK Authentication</span>
+    </div>
+
+    <div class="p-card">
+      <span class="p-card-ico">💰</span>
+      <div class="p-card-t">Fondos ocultos</div>
+      <div class="p-card-d">
+        Se verifica que el usuario tiene suficiente balance sin exponer su saldo total ni historial financiero.
+      </div>
+      <span class="p-tag">Private Balance Proof</span>
+    </div>
+
+    <div class="p-card">
+      <span class="p-card-ico">🤖</span>
+      <div class="p-card-t">Agente IA privado</div>
+      <div class="p-card-d">
+        Las acciones del agente por voz se ejecutan sin exponer los inputs del usuario en ningún momento.
+      </div>
+      <span class="p-tag">Private AI Execution</span>
+    </div>
+
+    <div class="p-card">
+      <span class="p-card-ico">⛓️</span>
+      <div class="p-card-t">Verificación on-chain</div>
+      <div class="p-card-d">
+        Solo el proof se registra en Ethereum Sepolia, nunca los datos sensibles originales.
+      </div>
+      <span class="p-tag">ZK + Blockchain</span>
+    </div>
+
+  </div>
+
+</section>
+<!-- MODOS -->
+<section id="modos">
+  <p class="sec-label reveal">Accesibilidad total</p>
+  <h2 class="sec-title reveal">Diseñada para todos,<br>adaptada para cada quien.</h2>
+  <p class="sec-sub reveal">ANITRAX tiene 3 modos de uso que cambian completamente la experiencia. Tú decides cómo interactuar con tu dinero.</p>
+  <div class="modes-grid">
+    <div class="mode-card reveal">
+      <div class="mode-ico">⚡</div>
+      <div class="mode-n">Modo Estándar</div>
+      <div class="mode-d">Experiencia visual completa con botones táctiles e interfaz fluida. Para el uso diario de cualquier persona.</div>
+      <ul class="mode-features">
+        <li>Interfaz visual con botones táctiles</li>
+        <li>Confirmación por voz opcional</li>
+        <li>Historial completo de transferencias</li>
+        <li>Notificaciones como app bancaria</li>
+        <li>Comprobante PNG o PDF al instante</li>
+        <li class="g">Filtros de daltonismo disponibles</li>
+      </ul>
+      <span class="mode-tag">Para todos</span>
+    </div>
+    <div class="mode-card m2 reveal">
+      <div class="mode-ico">🎙️</div>
+      <div class="mode-n">Modo Sinestético</div>
+      <div class="mode-d">Control 100% por voz con IA. Di el wake word y la IA toma el control completo — sin tocar la pantalla.</div>
+      <ul class="mode-features">
+        <li>Wake word "ANITRAX ábrete" activa la app</li>
+        <li>IA Gemini guía cada paso por voz</li>
+        <li>Verificación biométrica por voz</li>
+        <li>Di el monto en palabras: "cero punto uno"</li>
+        <li>La IA repite datos antes de confirmar</li>
+        <li class="g">Filtros de daltonismo disponibles</li>
+      </ul>
+      <span class="mode-tag c">Discapacidad visual</span>
+    </div>
+    <div class="mode-card m3 reveal">
+      <div class="mode-ico">👁️</div>
+      <div class="mode-n">Modo Visual</div>
+      <div class="mode-d">Experiencia sin audio. Botones grandes, máximo contraste, navegación simplificada.</div>
+      <ul class="mode-features">
+        <li>Sin audio — solo visual</li>
+        <li>Botones grandes y bien espaciados</li>
+        <li>Alto contraste en toda la interfaz</li>
+        <li>Confirmación siempre táctil</li>
+        <li>Notificaciones visuales prominentes</li>
+        <li class="g">Filtros de daltonismo disponibles</li>
+      </ul>
+      <span class="mode-tag g">Discapacidad auditiva</span>
+    </div>
+  </div>
+</section>
+
+<!-- QUOTE 2 -->
+<div class="quote-section">
+  <p class="quote-text reveal">"La inclusión no es una función extra.<br><span class="hi">Es el núcleo de ANITRAX."</span></p>
+  <p class="quote-sub reveal">3 modos + 5 filtros de daltonismo + biometría + voz. Porque el acceso al dinero no debería depender de tus capacidades.</p>
+</div>
+
+<!-- STATS -->
+<section id="stats" style="background:var(--bg2);max-width:100%;padding:120px 60px">
+  <div style="max-width:1200px;margin:0 auto">
+    <p class="sec-label reveal" style="text-align:center">Por qué ANITRAX</p>
+    <h2 class="sec-title reveal" style="text-align:center">Números que hablan.</h2>
+    <div class="stats-row" style="margin-top:48px">
+      <div class="stat reveal"><div class="stat-n">0</div><div class="stat-l">Comisiones ocultas por transferencia Bluetooth</div></div>
+      <div class="stat reveal"><div class="stat-n">6</div><div class="stat-l">Redes blockchain soportadas</div></div>
+      <div class="stat reveal"><div class="stat-n">8%</div><div class="stat-l">Rendimiento mensual máximo tier Whale</div></div>
+      <div class="stat reveal"><div class="stat-n">∞</div><div class="stat-l">Transferencias sin límite y sin internet</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- SEGURIDAD -->
+<section id="seguridad">
+  <p class="sec-label reveal">Seguridad bancaria</p>
+  <h2 class="sec-title reveal">Tu identidad es tu llave.</h2>
+  <p class="sec-sub reveal">ANITRAX usa múltiples capas de seguridad para proteger cada transferencia. Sin contraseñas débiles — solo biometría y voz.</p>
+  <div class="cards-grid">
+    <div class="p-card">
+      <span class="p-card-ico">👆</span>
+      <div class="p-card-t">Huella digital</div>
+      <div class="p-card-d">Autenticación con BiometricPrompt de AndroidX. Acceso rápido y seguro sin contraseña — el sensor del celular es tu llave.</div>
+      <span class="p-tag">Biometría nativa Android</span>
+    </div>
+    <div class="p-card">
+      <span class="p-card-ico">🗣️</span>
+      <div class="p-card-t">Firma de voz única</div>
+      <div class="p-card-d">VoiceProfileManager crea una firma acústica única tuya. Nadie más puede entrar usando tu voz — imposible de replicar.</div>
+      <span class="p-tag">VoiceProfileManager</span>
+    </div>
+    <div class="p-card">
+      <span class="p-card-ico">🔓</span>
+      <div class="p-card-t">Wake word desde bloqueado</div>
+      <div class="p-card-d">Di "ANITRAX ábrete" y la app se abre aunque el celular esté bloqueado. AnitraxAccessibilityService siempre escucha.</div>
+      <span class="p-tag">AccessibilityService</span>
+    </div>
+    <div class="p-card">
+      <span class="p-card-ico">📱</span>
+      <div class="p-card-t">Datos 100% locales</div>
+      <div class="p-card-d">Todo se guarda en tu celular con SharedPreferences. Sin servidores externos, sin nube, sin terceros.</div>
+      <span class="p-tag">Sin cloud · Sin terceros</span>
+    </div>
+    <div class="p-card">
+      <span class="p-card-ico">🔔</span>
+      <div class="p-card-t">Notificaciones bancarias</div>
+      <div class="p-card-d">Push al instante: sesión iniciada, transferencia enviada, dinero recibido, confirmación blockchain.</div>
+      <span class="p-tag g">Push en tiempo real</span>
+    </div>
+    <div class="p-card">
+      <span class="p-card-ico">✅</span>
+      <div class="p-card-t">Confirmación antes de enviar</div>
+      <div class="p-card-d">La IA siempre repite los datos antes de ejecutar. Una vez confirmado en MetaMask, la transacción es irreversible.</div>
+      <span class="p-tag">Sin errores</span>
+    </div>
+  </div>
+</section>
+
+<!-- RENDIMIENTOS -->
+<section id="rendimientos">
+  <p class="sec-label reveal">Sistema DeFi</p>
+  <h2 class="sec-title reveal">Tu dinero crece<br>mientras lo usas.</h2>
+  <p class="sec-sub reveal">Cada ETH que transfieres suma a tu nivel. A más volumen mensual, mayor es tu tasa de rendimiento compuesto. Arquitectura lista para conectar a Aave o Compound en producción.</p>
+  <div class="rw-tiers">
+    <div class="rw-tier reveal">
+      <div class="rw-tier-ico">🥉</div>
+      <div class="rw-tier-name">Starter</div>
+      <div class="rw-tier-eth">0 – 0.1 ETH/mes</div>
+      <div class="rw-tier-rate">2%</div>
+      <div class="rw-tier-label">mensual</div>
+    </div>
+    <div class="rw-tier reveal">
+      <div class="rw-tier-ico">🥈</div>
+      <div class="rw-tier-name">Explorer</div>
+      <div class="rw-tier-eth">0.1 – 0.5 ETH/mes</div>
+      <div class="rw-tier-rate">3%</div>
+      <div class="rw-tier-label">mensual</div>
+    </div>
+    <div class="rw-tier reveal">
+      <div class="rw-tier-ico">🥇</div>
+      <div class="rw-tier-name">Builder</div>
+      <div class="rw-tier-eth">0.5 – 2 ETH/mes</div>
+      <div class="rw-tier-rate y" style="color:#FFB400">5%</div>
+      <div class="rw-tier-label">mensual</div>
+    </div>
+    <div class="rw-tier reveal">
+      <div class="rw-tier-ico">💎</div>
+      <div class="rw-tier-name">Validator</div>
+      <div class="rw-tier-eth">2 – 5 ETH/mes</div>
+      <div class="rw-tier-rate g">6%</div>
+      <div class="rw-tier-label">mensual</div>
+    </div>
+    <div class="rw-tier reveal">
+      <div class="rw-tier-ico">🐋</div>
+      <div class="rw-tier-name">Whale</div>
+      <div class="rw-tier-eth">5+ ETH/mes</div>
+      <div class="rw-tier-rate g">8%</div>
+      <div class="rw-tier-label">mensual</div>
+    </div>
+  </div>
+  <div class="rw-sim reveal">
+    <div class="rw-sim-title">🧮 Simula tu rendimiento</div>
+    <div class="rw-sim-sub">Mueve el slider o escribe el monto — calcula en tiempo real con interés compuesto real</div>
+
+    <!-- Input manual -->
+    <div style="display:flex;gap:12px;align-items:center;margin-bottom:20px">
+      <input type="number" id="rwInput" min="0" max="100" step="0.01" value="0.5"
+        placeholder="ETH/mes"
+        style="background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:12px 16px;color:var(--text);font-size:16px;font-family:'Syne',sans-serif;font-weight:700;width:140px;outline:none"
+        oninput="syncSlider(this.value)">
+      <span style="font-size:14px;color:var(--muted)">ETH por mes</span>
+      <span style="font-size:13px;color:var(--dim);margin-left:auto">≈ <span id="rwUsd">$1,600</span> USD/mes</span>
+    </div>
+
+    <!-- Slider -->
+    <input type="range" class="rw-slider" id="rwSlider" min="0" max="10" step="0.01" value="0.5" oninput="syncInput(this.value)">
+    <div class="rw-slider-labels">
+      <span>0 ETH</span>
+      <span class="rw-slider-val" id="rwVal">0.50 ETH/mes</span>
+      <span>10 ETH</span>
+    </div>
+
+    <!-- Tier activo -->
+    <div style="background:var(--bg2);border:1px solid rgba(0,212,255,.3);border-radius:14px;padding:16px 20px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px">
+      <div>
+        <div style="font-size:11px;color:var(--muted);margin-bottom:4px;letter-spacing:.1em;text-transform:uppercase">Tier activo</div>
+        <div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:700;color:var(--cyan)" id="rwTierName">🥈 Explorer</div>
+      </div>
+      <div style="text-align:center">
+        <div style="font-size:11px;color:var(--muted);margin-bottom:4px">Tasa mensual</div>
+        <div style="font-family:'Syne',sans-serif;font-size:32px;font-weight:800;color:var(--cyan)" id="rwRate">3%</div>
+      </div>
+      <div style="text-align:right">
+        <div style="font-size:11px;color:var(--muted);margin-bottom:4px">Siguiente tier</div>
+        <div style="font-size:13px;color:var(--dim)" id="rwNext">+0.40 ETH → Builder 5%</div>
+      </div>
+    </div>
+
+    <!-- Barra progreso al siguiente tier -->
+    <div style="margin-bottom:20px">
+      <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--dim);margin-bottom:6px">
+        <span id="rwProgressLabel">Progreso al siguiente tier</span>
+        <span id="rwProgressPct">20%</span>
+      </div>
+      <div style="height:6px;background:var(--bg2);border-radius:99px;overflow:hidden">
+        <div id="rwProgressBar" style="height:100%;background:linear-gradient(90deg,var(--blue),var(--cyan));border-radius:99px;width:20%;transition:width .3s"></div>
+      </div>
+    </div>
+
+    <!-- Resultados por período -->
+    <div style="font-size:12px;color:var(--muted);margin-bottom:12px;letter-spacing:.08em;text-transform:uppercase">Proyección de ganancias (interés compuesto)</div>
+    <div class="rw-results">
+      <div class="rw-res">
+        <div class="rw-res-label">1 mes</div>
+        <div class="rw-res-val" id="rw1eth">+0.0150</div>
+        <div class="rw-res-unit">ETH</div>
+        <div style="font-size:11px;color:var(--dim);margin-top:4px" id="rw1usd">$48 USD</div>
+      </div>
+      <div class="rw-res">
+        <div class="rw-res-label">3 meses</div>
+        <div class="rw-res-val" id="rw3eth">+0.0455</div>
+        <div class="rw-res-unit">ETH</div>
+        <div style="font-size:11px;color:var(--dim);margin-top:4px" id="rw3usd">$146 USD</div>
+      </div>
+      <div class="rw-res">
+        <div class="rw-res-label">6 meses</div>
+        <div class="rw-res-val g" id="rw6eth">+0.0978</div>
+        <div class="rw-res-unit">ETH</div>
+        <div style="font-size:11px;color:var(--dim);margin-top:4px" id="rw6usd">$313 USD</div>
+      </div>
+      <div class="rw-res">
+        <div class="rw-res-label">12 meses</div>
+        <div class="rw-res-val g" id="rw12eth">+0.2190</div>
+        <div class="rw-res-unit">ETH</div>
+        <div style="font-size:11px;color:var(--dim);margin-top:4px" id="rw12usd">$701 USD</div>
+      </div>
+    </div>
+
+    <div style="margin-top:16px;padding:14px 16px;background:rgba(0,212,106,.08);border:1px solid rgba(0,212,106,.2);border-radius:12px;font-size:13px;color:var(--green);text-align:center" id="rwSummary">
+      Transfiriendo 0.50 ETH/mes durante 12 meses ganarías +0.2190 ETH (~$701 USD) 💰
+    </div>
+  </div>
+</section>
+
+<!-- BLOCKCHAIN -->
+<section id="blockchain">
+  <p class="sec-label reveal">Tecnología</p>
+  <h2 class="sec-title reveal">Cada transferencia,<br>grabada para siempre.</h2>
+  <p class="sec-sub reveal">El contrato inteligente de ANITRAX en Sepolia Testnet registra cada movimiento de forma permanente. Cualquiera puede verificarlo en Etherscan ahora mismo.</p>
+  <div class="chain-flow">
+    <div class="chain-step reveal">
+      <div class="chain-num">1</div>
+      <div style="flex:1"><div class="chain-t">Transferencia Bluetooth sin internet</div><div class="chain-d">Datos via Bluetooth RFCOMM directo entre celulares. Sin servidores, sin red.</div></div>
+      <span class="chain-badge">Sin internet</span>
+    </div>
+    <div class="chain-arrow">↓</div>
+    <div class="chain-step reveal">
+      <div class="chain-num">2</div>
+      <div style="flex:1"><div class="chain-t">Receptor confirma recepción</div><div class="chain-d">El celular receptor envía "ok". Ambos registran localmente.</div></div>
+      <span class="chain-badge">Confirmado BT</span>
+    </div>
+    <div class="chain-arrow">↓</div>
+    <div class="chain-step reveal">
+      <div class="chain-num">3</div>
+      <div style="flex:1"><div class="chain-t">MetaMask abre para Sepolia</div><div class="chain-d">La app abre MetaMask pre-llenada. El usuario confirma con un tap.</div></div>
+      <span class="chain-badge">ETH Sepolia</span>
+    </div>
+    <div class="chain-arrow">↓</div>
+    <div class="chain-step reveal">
+      <div class="chain-num">4</div>
+      <div style="flex:1"><div class="chain-t">Contrato inteligente registra</div><div class="chain-d">0x29f4e6B5Fcb0Ce294eA20bEcd7a7900C7E4e771F — almacena sender, receiver, monto, timestamp y nota.</div></div>
+      <span class="chain-badge">Inmutable</span>
+    </div>
+    <div class="chain-arrow">↓</div>
+    <div class="chain-step reveal">
+      <div class="chain-num g">5</div>
+      <div style="flex:1"><div class="chain-t">Comprobante + Notificaciones</div><div class="chain-d">PNG/PDF con wallets, hash, fecha y monto. Push a ambos celulares.</div></div>
+      <span class="chain-badge">PNG · PDF · Push</span>
+    </div>
+  </div>
+</section>
+
+<!-- QUOTE 3 -->
+<div class="quote-section">
+  <p class="quote-text reveal">"No necesitas banco.<br>No necesitas WiFi.<br><span class="hi">Solo necesitas ANITRAX."</span></p>
+  <p class="quote-sub reveal">Transferencias Bluetooth + blockchain + IA + biometría + rendimientos DeFi. Para todos, en cualquier lugar.</p>
+</div>
+
+<!-- VIDEOS -->
+<div class="videos-section" id="videos">
+  <div class="videos-inner">
+    <p class="sec-label reveal" style="text-align:center">ANITRAX en acción</p>
+    <h2 class="sec-title reveal" style="text-align:center">Míralo funcionar.</h2>
+    <p class="sec-sub reveal" style="text-align:center;margin:0 auto">Dos videos — uno muestra la app en tiempo real, el otro es el comercial oficial de ANITRAX.</p>
+    <div class="videos-grid">
+
+      <!-- VIDEO 1: DEMO -->
+      <div class="video-card">
+        <div class="video-card-header">
+          <div class="video-card-label">Demo oficial</div>
+          <div class="video-card-title">ANITRAX en acción</div>
+          <div class="video-card-desc">App real funcionando: transferencia Bluetooth, registro en Sepolia, control por voz y comprobante bancario.</div>
+        </div>
+        <a href="https://youtu.be/QVREoHfyEoE" target="_blank" rel="noopener" style="display:block;position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;cursor:pointer;text-decoration:none" id="videoDemo">
+          <img src="https://img.youtube.com/vi/QVREoHfyEoE/maxresdefault.jpg"
+            onerror="this.src='https://img.youtube.com/vi/QVREoHfyEoE/hqdefault.jpg'"
+            style="width:100%;height:100%;object-fit:cover;display:block">
+          <div style="position:absolute;inset:0;background:rgba(0,0,0,.4);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px">
+            <div style="width:72px;height:72px;border-radius:50%;background:#FF0000;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 24px rgba(0,0,0,.6)">
+              <div style="width:0;height:0;border-top:14px solid transparent;border-bottom:14px solid transparent;border-left:24px solid white;margin-left:6px"></div>
+            </div>
+            <span style="color:#fff;font-family:Syne,sans-serif;font-size:15px;font-weight:700">▶ Ver demo en YouTube</span>
+          </div>
+        </a>
+      </div>
+
+      
+      <div class="video-card">
+        <div class="video-card-header">
+          <div class="video-card-label">Comercial oficial</div>
+          <div class="video-card-title">El futuro de las transferencias</div>
+          <div class="video-card-desc">El comercial oficial de ANITRAX — sin límites, sin internet, para todos. Música generada con IA.</div>
+        </div>
+        <a href="https://youtu.be/yOntRUHU5FM" target="_blank" rel="noopener" style="display:block;position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;cursor:pointer;text-decoration:none" id="videoComercial">
+          <img src="https://img.youtube.com/vi/yOntRUHU5FM/maxresdefault.jpg"
+            onerror="this.src='https://img.youtube.com/vi/yOntRUHU5FM/hqdefault.jpg'"
+            style="width:100%;height:100%;object-fit:cover;display:block">
+          <div style="position:absolute;inset:0;background:rgba(0,0,0,.4);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px">
+            <div style="width:72px;height:72px;border-radius:50%;background:#FF0000;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 24px rgba(0,0,0,.6)">
+              <div style="width:0;height:0;border-top:14px solid transparent;border-bottom:14px solid transparent;border-left:24px solid white;margin-left:6px"></div>
+            </div>
+            <span style="color:#fff;font-family:Syne,sans-serif;font-size:15px;font-weight:700">▶ Ver comercial en YouTube</span>
+          </div>
+        </a>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- CTA -->
+<section id="cta">
+  <div class="cta-glow"></div>
+  <p class="sec-label reveal" style="text-align:center">ANITRAX · Hackathon 2026</p>
+  <h2 class="sec-title reveal" style="text-align:center;font-size:clamp(36px,6vw,72px)">El futuro de las transferencias<br>está en tu <span class="cyan">bolsillo.</span></h2>
+  <p class="sec-sub reveal" style="text-align:center;margin:0 auto 40px">Sin internet, sin exclusión, sin límites. Solo tú, tu celular y la blockchain.</p>
+  <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap" class="reveal">
+    <a href="https://github.com/franciscoalmarazlap-cmd/ANITRAX.github.io/releases/latest" class="btn-primary" target="_blank">🚀 Descargar APK</a>
+    <a href="#videos" class="btn-outline">▶ Ver demo</a>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo"><span>A</span>NITRAX</div>
+  <div>Bluetooth + Blockchain + IA · Sepolia Testnet · Hackathon 2026</div>
+  <div>
+    <a href="https://sepolia.etherscan.io/address/0x29f4e6B5Fcb0Ce294eA20bEcd7a7900C7E4e771F" target="_blank" style="color:var(--cyan);text-decoration:none;font-size:12px">Ver contrato en Etherscan →</a>
+  </div>
+</footer>
+
+<script>
+
+var RW_TIERS=[
+  {name:'Starter',emoji:'🥉',min:0,max:0.1,rate:0.02},
+  {name:'Explorer',emoji:'🥈',min:0.1,max:0.5,rate:0.03},
+  {name:'Builder',emoji:'🥇',min:0.5,max:2,rate:0.05},
+  {name:'Validator',emoji:'💎',min:2,max:5,rate:0.06},
+  {name:'Whale',emoji:'🐋',min:5,max:999,rate:0.08}
+];
+var ETH_USD=3200;
+
+function getRWTier(eth){
+  var t=RW_TIERS[0];
+  for(var i=0;i<RW_TIERS.length;i++){if(eth>=RW_TIERS[i].min)t=RW_TIERS[i];}
+  return t;
+}
+function getNextTier(current){
+  for(var i=0;i<RW_TIERS.length;i++){
+    if(RW_TIERS[i].name===current.name && i+1<RW_TIERS.length) return RW_TIERS[i+1];
+  }
+  return null;
+}
+function calcRW(val){
+  val=parseFloat(val)||0;
+  if(val<0)val=0;
+  document.getElementById('rwVal').textContent=val.toFixed(2)+' ETH/mes';
+  document.getElementById('rwUsd').textContent='$'+(val*ETH_USD).toLocaleString('es-MX',{maximumFractionDigits:0});
+
+  var tier=getRWTier(val);
+  var r=tier.rate;
+
+  
+  document.getElementById('rwTierName').textContent=tier.emoji+' '+tier.name;
+  document.getElementById('rwRate').textContent=(r*100)+'%';
+
+  
+  var next=getNextTier(tier);
+  if(next){
+    var diff=(next.min-val);
+    document.getElementById('rwNext').textContent=diff>0?'+'+diff.toFixed(2)+' ETH → '+next.name+' '+(next.rate*100)+'%':'¡Tier '+tier.name+' alcanzado!';
+    // Progreso
+    var pct=Math.min(100,Math.round(((val-tier.min)/(next.min-tier.min))*100));
+    document.getElementById('rwProgressBar').style.width=pct+'%';
+    document.getElementById('rwProgressPct').textContent=pct+'%';
+    document.getElementById('rwProgressLabel').textContent='Progreso a '+next.name;
+  } else {
+    document.getElementById('rwNext').textContent='🏆 Tier máximo alcanzado';
+    document.getElementById('rwProgressBar').style.width='100%';
+    document.getElementById('rwProgressPct').textContent='100%';
+    document.getElementById('rwProgressLabel').textContent='Nivel máximo';
+  }
+
+  
+  function earned(m){return val*Math.pow(1+r,m)-val;}
+  function fmt(m){return '+'+earned(m).toFixed(4);}
+  function usd(m){return '$'+(earned(m)*ETH_USD).toLocaleString('es-MX',{maximumFractionDigits:0})+' USD';}
+
+  document.getElementById('rw1eth').textContent=fmt(1);
+  document.getElementById('rw3eth').textContent=fmt(3);
+  document.getElementById('rw6eth').textContent=fmt(6);
+  document.getElementById('rw12eth').textContent=fmt(12);
+  document.getElementById('rw1usd').textContent=usd(1);
+  document.getElementById('rw3usd').textContent=usd(3);
+  document.getElementById('rw6usd').textContent=usd(6);
+  document.getElementById('rw12usd').textContent=usd(12);
+
+  // Resumen
+  document.getElementById('rwSummary').textContent=
+    'Transfiriendo '+val.toFixed(2)+' ETH/mes durante 12 meses ganarías '+fmt(12)+' ETH (~'+usd(12)+') 💰';
+}
+function syncInput(v){
+  var val=parseFloat(v)||0;
+  document.getElementById('rwInput').value=val.toFixed(2);
+  calcRW(val);
+}
+function syncSlider(v){
+  var val=parseFloat(v)||0;
+  if(val>10) val=10;
+  document.getElementById('rwSlider').value=val;
+  calcRW(val);
+}
+calcRW(0.5);
+
+
+
+gsap.registerPlugin(ScrollTrigger);
+gsap.utils.toArray('.reveal').forEach(function(el){
+  gsap.to(el,{opacity:1,y:0,duration:.9,ease:'power3.out',scrollTrigger:{trigger:el,start:'top 87%',toggleActions:'play none none reverse'}});
+});
+gsap.utils.toArray('.p-card').forEach(function(c,i){
+  gsap.from(c,{opacity:0,y:70,scale:.93,duration:.9,delay:i*.08,ease:'power3.out',scrollTrigger:{trigger:c,start:'top 88%',toggleActions:'play none none reverse'}});
+  gsap.to(c,{y:-22,ease:'none',scrollTrigger:{trigger:c,start:'top bottom',end:'bottom top',scrub:1.8}});
+});
+gsap.utils.toArray('.mode-card').forEach(function(c,i){
+  gsap.to(c,{opacity:1,y:0,duration:.9,delay:i*.15,ease:'power3.out',scrollTrigger:{trigger:c,start:'top 85%',toggleActions:'play none none reverse'}});
+  gsap.to(c,{y:-18,ease:'none',scrollTrigger:{trigger:c,start:'top bottom',end:'bottom top',scrub:2}});
+});
+gsap.utils.toArray('.stat').forEach(function(s,i){
+  gsap.to(s,{opacity:1,scale:1,duration:.8,delay:i*.1,ease:'back.out(1.5)',scrollTrigger:{trigger:s,start:'top 85%',toggleActions:'play none none reverse'}});
+});
+gsap.utils.toArray('.chain-step').forEach(function(s,i){
+  gsap.to(s,{opacity:1,x:0,duration:.8,delay:i*.1,ease:'power3.out',scrollTrigger:{trigger:s,start:'top 87%',toggleActions:'play none none reverse'}});
+});
+gsap.to('.hero-grid',{y:'30%',ease:'none',scrollTrigger:{trigger:'#hero',start:'top top',end:'bottom top',scrub:true}});
+gsap.to('.hero-glow',{y:'20%',scale:1.3,ease:'none',scrollTrigger:{trigger:'#hero',start:'top top',end:'bottom top',scrub:true}});
+ScrollTrigger.create({start:'top -80',onUpdate:function(){document.getElementById('navbar').style.background='rgba(4,8,16,.97)';},onLeaveBack:function(){document.getElementById('navbar').style.background='rgba(4,8,16,.8)';}});
+</script>
+</body>
+</html>
